@@ -1,24 +1,50 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+
+interface IInvoice {
+  id: number;
+  name: string;
+  total: string;
+}
+interface IInvoiceList {
+  customerName: string;
+  invoices: IInvoice[];
+}
+
+interface IInvoiceListProps {
+  invoiceList: IInvoiceList;
+  logo?: string;
+}
+
+const Invoice = (props: IInvoice) => {
+  const { id, name, total } = props;
+
+  return <h4>{`${id}: ${name} ---> ${total}`}</h4>;
+};
+
+const InvoiceList = (props: IInvoiceListProps) => {
+  const { customerName, invoices } = props.invoiceList;
+  return (
+    <>
+      <h1>{customerName}</h1>
+      {invoices.map((invoice) => (
+        <Invoice key={invoice.id} {...invoice} />
+      ))}
+    </>
+  );
+};
 
 function App() {
+  const data: IInvoiceList = {
+    customerName: "Google",
+    invoices: [
+      { id: 123, name: "Dev work", total: "20.00" },
+      { id: 223, name: "More Dev work", total: "20.00" },
+      { id: 323, name: "Something different", total: "20.00" },
+    ],
+  };
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <InvoiceList invoiceList={data} />
     </div>
   );
 }
